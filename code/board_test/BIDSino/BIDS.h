@@ -1,5 +1,3 @@
-#pragma once
-
 namespace BIDS {
 float SerialGet(String);
 float DataGet(String, String, int);

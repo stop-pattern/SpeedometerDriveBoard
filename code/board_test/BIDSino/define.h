@@ -10,11 +10,3 @@
 #define SCK  (33)
 #define OE (14)
 #define SCL  (32)
-
-void ShiftOut(bool[]);
-void GetData(void);
-void SetNeedle(void);
-void SetSound(void);
-void SetLamp(void);
-void SetData(void);
-void demo(void);
