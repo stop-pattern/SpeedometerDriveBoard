@@ -43,7 +43,7 @@ void setup() {
   pinMode(OE, OUTPUT);
   pinMode(SCL, OUTPUT);
 
-  cnt = 100;
+  cnt = 0;
 
   digitalWrite(LED, HIGH);
 

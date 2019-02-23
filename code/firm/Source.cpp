@@ -57,15 +57,16 @@ void SetSound(void) {
   switch (int(ATCbell)) {
     case 1:
       bell = true;
+      shiftregister[43] = bell;
       break;
     default:
       bell = false;
       break;
   }
-  if (bell = true) {
-    shiftregister[0] = bell;
-    ShiftOut(shiftregister);
-    bell = false;
+  if (bell == true) {
+    shiftregister[43] = bell;
+    //ShiftOut(shiftregister);
+    //bell = false;
   }
 }
 
@@ -95,7 +96,7 @@ void SetData(void) {
   for (int i = 0; i < 25; i++) {
     shiftregister[i] = indicator[i];
   }
-
+  //shink
   shiftregister[25] = R;
   shiftregister[26] = G;
   shiftregister[27] = notice;
@@ -112,7 +113,7 @@ void SetData(void) {
   shiftregister[38] = 0;
   shiftregister[39] = 0;
 
-  //shink
+  //source
   shiftregister[40] = L15;
   shiftregister[41] = L60;
   shiftregister[42] = ATS;
@@ -123,6 +124,7 @@ void SetData(void) {
   shiftregister[47] = 0;
 
   ShiftOut(shiftregister);
+  bell = false;
 }
 
 
