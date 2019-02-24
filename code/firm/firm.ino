@@ -58,10 +58,10 @@ void setup() {
 }
 
 void loop() {
-  
+
   GetData();
 
   SetData();
-  
+
   delayMicroseconds(5);
 }
