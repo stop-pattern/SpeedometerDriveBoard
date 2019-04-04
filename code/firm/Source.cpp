@@ -2,24 +2,13 @@
 #include "define.h"
 #include "BIDS.h"
 
-/*----------variants---------*/
-extern double Speed;
-extern double ORP;
-extern int indicator[25];
-extern int R, G, notice, P, X, BL;
-extern int bell;
-extern int L15, L60, ATS;
-extern int cnt;
-extern bool shiftregister[50];
-extern int reg;
-
 void ShiftOut(bool senddata[]) {
   long int out = 0;
 
   for (int i = 0; i < 48; i++) {
     out |= (senddata[i] << i);
   }
-  Serial.println(out, BIN); //debug
+  //Serial.println(out, BIN); //debug
   if (out != reg) {
     shiftOut(SER, SCK, MSBFIRST, out >> 40);
     shiftOut(SER, SCK, MSBFIRST, out >> 32);
@@ -71,7 +60,7 @@ void SetLamp(void) {
 
   X = BIDS::DataGet("I", "P", 101);
 
-  if (X != 0) {
+  if (X == false) {
     R = BIDS::DataGet("I", "P", 131);
     G = BIDS::DataGet("I", "P", 132);
     notice = BIDS::DataGet("I", "P", 133);

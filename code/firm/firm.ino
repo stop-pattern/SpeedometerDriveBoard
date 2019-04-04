@@ -31,6 +31,7 @@ bool light_off[] = {
   0, 0, 0, 0, 0, 0, 0, 0,
 };
 
+
 void setup() {
   pinMode(IO0, INPUT);
   pinMode(LED, OUTPUT);
@@ -42,6 +43,8 @@ void setup() {
   pinMode(SCK, OUTPUT);
   pinMode(OE, OUTPUT);
   pinMode(SCL, OUTPUT);
+
+  attachInterrupt(SW, interrupt, CHANGE); //スイッチ割込み
 
   cnt = 0;
 
@@ -63,5 +66,19 @@ void loop() {
 
   SetData();
 
-  delayMicroseconds(5);
+  if (isSW) {
+    if (SW == LOW) {
+      BIDS::DataGet("K", "P", 0);
+    } else  {
+      BIDS::DataGet("K", "R", 0);
+    }
+    isSW = false;
+  }
+
+  delay(1);
+}
+
+//スイッチ割込み
+void interrupt(void) {
+  isSW = true;
 }

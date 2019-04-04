@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <arduino.h>
 #include <SPI.h>
 #include "DACx0508.h"
@@ -10,15 +9,14 @@ DACx050x::DACx050x(SPIClass * c_spi, int CS) {//, int clockspeed, int bitorder, 
 }
 
 DACx050x::~DACx050x() {
-  
+
 }
 
 String DACx050x::Read(int Data) {
   String ret;
   digitalWrite(SS, LOW);
-  spi->transfer(Data);  //transfer(Data,24);
-  ret = spi->transfer(0b000000000000000000000000,24)
-  digitalWrite(SS, HIGH);
+  ret = spi->transfer(Data, 24)
+        digitalWrite(SS, HIGH);
   return ret;
 }
 
@@ -28,156 +26,70 @@ void DACx050x::Write(int Data) {
 
 
 
-    void Init(void){
-      
-    }
-    void Reset (void){
-      //DACx050x::Write(0x1010);
-    }
-
-    int GetDevice(void){
-      String ret;
-      int i = 1;
-      ret= DACx050x::Read(i);
-      return ret.toInt();
-    }
-    int GetSync(void){
-      
-    }
-    int GetConfig(void){
-      
-    }
-    int GetGain(int, int){
-      
-    }
-    int GetBrdcast(void){
-      
-    }
-    int GetStatus(void){
-      
-    }
-    int GetValue(int, int){
-      
-    }
-
-
-    void SetNop(int){
-      DACx050x::Read(0b00);
-    }
-    void SetSync(int, int){
-      
-    }
-    void SetConfig(int, int, int, int, int, int){
-      
-    }
-    void SetGain(int, int){
-      
-    }
-    void SetTrigger(int, int){
-      
-    }
-    void SetBrdcast(int){
-      
-    }
-    void SetStatus(int){
-      
-    }
-    void SetValue(int, int){
-      
-    }
-
-    void Pwdwn(void){
-      
-    }
-=======
-#include <arduino.h>
-#include <SPI.h>
-#include "DACx0508.h"
-
-DACx050x::DACx050x(SPIClass * c_spi, int CS) {//, int clockspeed, int bitorder, int spimode) {
-  this->spi = &c_spi;
-  this->SS = CS;
-  //this->spi->beginTransaction(SPISettings(clockspeed, bitorder, spimodev));
+void DACx050x::Init(void) {
+    this->GetDevice(void);
+    this->GetSync(void);
+    this->GetConfig(void);
+    this->GetGain(int, int);
+}
+void DACx050x::Reset (void) {
+  //DACx050x::Write(0x1010);
 }
 
-DACx050x::~DACx050x() {
-  
-}
-
-String DACx050x::Read(int Data) {
+int DACx050x::GetDevice(void) {
   String ret;
-  digitalWrite(SS, LOW);
-  spi->transfer(Data);  //transfer(Data,24);
-  ret = spi->transfer(0b000000000000000000000000,24)
-  digitalWrite(SS, HIGH);
-  return ret;
+  int i = 1;
+  ret = this->Read(i);
+  return ret.toInt();
+}
+int DACx050x::GetSync(void) {
+
+}
+int DACx050x::GetConfig(void) {
+
+}
+int DACx050x::GetGain(int, int) {
+
+}
+int DACx050x::GetGain(void) {
+//全スキャン
+}
+int DACx050x::GetBrdcast(void) {
+
+}
+int DACx050x::GetStatus(void) {
+
+}
+int DACx050x::GetValue(int, int) {
+
 }
 
-void DACx050x::Write(int Data) {
-  DACx050x::Read(Data);
+
+void DACx050x::SetNop(int) {
+  this->Read(0b00);
+}
+void DACx050x::SetSync(int, int) {
+
+}
+void DACx050x::SetConfig(int, int, int, int, int, int) {
+
+}
+void DACx050x::SetGain(int, int) {
+
+}
+void DACx050x::SetTrigger(int, int) {
+
+}
+void DACx050x::SetBrdcast(int) {
+
+}
+void DACx050x::SetStatus(int) {
+
+}
+void DACx050x::SetValue(int, int) {
+
 }
 
+void DACx050x::Pwdwn(void) {
 
-
-    void Init(void){
-      
-    }
-    void Reset (void){
-      //DACx050x::Write(0x1010);
-    }
-
-    int GetDevice(void){
-      String ret;
-      int i = 1;
-      ret= DACx050x::Read(i);
-      return ret.toInt();
-    }
-    int GetSync(void){
-      
-    }
-    int GetConfig(void){
-      
-    }
-    int GetGain(int, int){
-      
-    }
-    int GetBrdcast(void){
-      
-    }
-    int GetStatus(void){
-      
-    }
-    int GetValue(int, int){
-      
-    }
-
-
-    void SetNop(int){
-      DACx050x::Read(0b00);
-    }
-    void SetSync(int, int){
-      
-    }
-    void SetConfig(int, int, int, int, int, int){
-      
-    }
-    void SetGain(int, int){
-      
-    }
-    void SetTrigger(int, int){
-      
-    }
-    void SetBrdcast(int){
-      
-    }
-    void SetStatus(int){
-      
-    }
-    void SetValue(int, int){
-      
-    }
-
-    void Pwdwn(void){
-      
-    }
->>>>>>> acf3d5ac075861e1d6ade95787c2d3ec12d00e4b
+}

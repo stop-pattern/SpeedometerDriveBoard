@@ -13,3 +13,5 @@ int L15, L60, ATS;
 int cnt;
 bool shiftregister[50]; //シフトレジスタ送信値
 long int  reg;
+
+bool isSW;
