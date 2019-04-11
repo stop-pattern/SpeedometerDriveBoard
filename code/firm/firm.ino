@@ -1,5 +1,6 @@
 #include "define.h"
 #include "BIDS.h"
+#include <SPI.h>
 
 int VersionNum = 100;
 
@@ -53,6 +54,10 @@ void setup() {
   Serial.begin(115200);
   while (!Serial);
   VersionNum = BIDS::VersionCheck(VersionNum);
+
+  SPI.beginTransaction(SPISettings(50000000, MSBFIRST, SPI_MODE1));
+  SPI.begin();
+  SPI.transfer(0b000000101111111100000000);
 
   digitalWrite(LED, HIGH);
 

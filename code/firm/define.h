@@ -12,6 +12,11 @@
 #define OE (14)
 #define SCL  (32)
 
+#define MOSI 23
+#define MISO 19
+#define SCLK 18
+#define SS 5
+
 void ShiftOut(bool[]);
 void GetData(void);
 void SetNeedle(void);

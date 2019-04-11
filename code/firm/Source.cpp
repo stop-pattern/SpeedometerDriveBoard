@@ -1,6 +1,7 @@
 #include <arduino.h>
 #include "define.h"
 #include "BIDS.h"
+#include <SPI.h>
 
 void ShiftOut(bool senddata[]) {
   long int out = 0;
@@ -33,8 +34,13 @@ void SetNeedle(void) {
   Speed = BIDS::DataGet("I", "E", 1);
   ORP = BIDS::DataGet("I", "P", 135) / 10;
   //DAC
-  dacWrite(DAC1, Speed / 120 * 255);
-  dacWrite(DAC2, ORP / 120 * 255);
+  dacWrite(DAC1, abs(Speed) / 120 * 255);
+  dacWrite(DAC2, abs(ORP) / 120 * 255);
+
+  //DAC
+  int sendData = abs(Speed) / 120 * 4095;
+  SPI.transfer(0x8);
+  SPI.transfer16(sendData << 4);
 }
 
 void SetSound(void) {
@@ -56,6 +62,27 @@ void SetSound(void) {
 }
 
 void SetLamp(void) {
+  #define _NEW_
+  #ifdef _NEW_
+  int num, param;
+  num = BIDS::DataGet("I", "P", 100);
+  param = BIDS::DataGet("I", "P", 255);
+
+  X = param & 0b0001;
+  R = param & 0b0010;
+  G = param & 0b0100;
+  notice = param & 0b1000;
+  P = param & 0b00010000;
+  BL = param & 0b00100000;
+  L15 = param & 0b01000000;
+  L60 = param & 0b10000000;
+  ATS = param & 0b000100000000;
+  bell = param & 0b001000000000;
+
+  for (int i = 0; i < 25; i++) {
+    indicator[i] = num & 0b0001 << i;
+  }
+  #else
   int param;
 
   X = BIDS::DataGet("I", "P", 101);
@@ -96,55 +123,56 @@ void SetLamp(void) {
     }
     bell = true;
   }
+  #endif  
 }
 
-  void SetData(void) {
-    for (int i = 0; i < 25; i++) {
-      shiftregister[i] = indicator[i];
-    }
-    //shink
-    shiftregister[25] = R;
-    shiftregister[26] = G;
-    shiftregister[27] = notice;
-    shiftregister[28] = P;
-    shiftregister[29] = X;
-    shiftregister[30] = 0;
-    shiftregister[31] = 0;
-    shiftregister[32] = 0;
-    shiftregister[33] = 0;
-    shiftregister[34] = 0;
-    shiftregister[35] = 0;
-    shiftregister[36] = 0;
-    shiftregister[37] = 0;
-    shiftregister[38] = 0;
-    shiftregister[39] = 0;
-
-    //source
-    shiftregister[40] = L15;
-    shiftregister[41] = L60;
-    shiftregister[42] = ATS;
-    shiftregister[43] = bell;
-    shiftregister[44] = 0;//BL;
-    shiftregister[45] = 0;
-    shiftregister[46] = 0;
-    shiftregister[47] = 0;
-
-    ShiftOut(shiftregister);
-    bell = false;
+void SetData(void) {
+  for (int i = 0; i < 25; i++) {
+    shiftregister[i] = indicator[i];
   }
+  //shink
+  shiftregister[25] = R;
+  shiftregister[26] = G;
+  shiftregister[27] = notice;
+  shiftregister[28] = P;
+  shiftregister[29] = X;
+  shiftregister[30] = 0;
+  shiftregister[31] = 0;
+  shiftregister[32] = 0;
+  shiftregister[33] = 0;
+  shiftregister[34] = 0;
+  shiftregister[35] = 0;
+  shiftregister[36] = 0;
+  shiftregister[37] = 0;
+  shiftregister[38] = 0;
+  shiftregister[39] = 0;
+
+  //source
+  shiftregister[40] = L15;
+  shiftregister[41] = L60;
+  shiftregister[42] = ATS;
+  shiftregister[43] = bell;
+  shiftregister[44] = 0;//BL;
+  shiftregister[45] = 0;
+  shiftregister[46] = 0;
+  shiftregister[47] = 0;
+
+  ShiftOut(shiftregister);
+  bell = false;
+}
 
 
-  void demo(void) {
-    /*
-      double B = 255, R = 255;
-      while (true) {
-        if(analogRead(IO0) == HIGH) break;
-        for (int i = 0 ; i < 8; i++) {
-        shiftOut(SER, SCK, MSBFIRST, 0b11111111);
-        }
-        digitalWrite(RCK, LOW);
-        digitalWrite(RCK, HIGH);
-        dacWrite(DAC1,B);
-        dacWrite(DAC2,R);
-      }*/
-  }
+void demo(void) {
+  /*
+    double B = 255, R = 255;
+    while (true) {
+      if(analogRead(IO0) == HIGH) break;
+      for (int i = 0 ; i < 8; i++) {
+      shiftOut(SER, SCK, MSBFIRST, 0b11111111);
+      }
+      digitalWrite(RCK, LOW);
+      digitalWrite(RCK, HIGH);
+      dacWrite(DAC1,B);
+      dacWrite(DAC2,R);
+    }*/
+}
