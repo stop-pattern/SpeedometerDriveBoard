@@ -35,6 +35,7 @@ bool light_off[] = {
 
 void setup() {
   pinMode(IO0, INPUT);
+  pinMode(SW, INPUT);
   pinMode(LED, OUTPUT);
   pinMode(DAC1, OUTPUT);
   pinMode(DAC2, OUTPUT);
@@ -45,11 +46,17 @@ void setup() {
   pinMode(OE, OUTPUT);
   pinMode(SCL, OUTPUT);
 
+  pinMode(MOSI, OUTPUT);
+  pinMode(MISO, OUTPUT);
+  pinMode(SCLK, OUTPUT);
+  pinMode(SS, OUTPUT);
+
   attachInterrupt(SW, interrupt, CHANGE); //スイッチ割込み
 
   cnt = 0;
 
   digitalWrite(LED, HIGH);
+  digitalWrite(SS, HIGH);
 
   Serial.begin(115200);
   while (!Serial);
@@ -72,7 +79,7 @@ void loop() {
   SetData();
 
   if (isSW) {
-    if (SW == LOW) {
+    if (analogRead(SW) == HIGH) {
       BIDS::DataGet("K", "P", 0);
     } else  {
       BIDS::DataGet("K", "R", 0);

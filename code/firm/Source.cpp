@@ -39,8 +39,10 @@ void SetNeedle(void) {
 
   //DAC
   int sendData = abs(Speed) / 120 * 4095;
+  digitalWrite(SS, LOW);
   SPI.transfer(0x8);
   SPI.transfer16(sendData << 4);
+  digitalWrite(SS, HIGH);
 }
 
 void SetSound(void) {
@@ -62,8 +64,8 @@ void SetSound(void) {
 }
 
 void SetLamp(void) {
-  #define _NEW_
-  #ifdef _NEW_
+#define _NEW_
+#ifdef _NEW_
   int num, param;
   num = BIDS::DataGet("I", "P", 100);
   param = BIDS::DataGet("I", "P", 255);
@@ -82,7 +84,7 @@ void SetLamp(void) {
   for (int i = 0; i < 25; i++) {
     indicator[i] = num & 0b0001 << i;
   }
-  #else
+#else
   int param;
 
   X = BIDS::DataGet("I", "P", 101);
@@ -123,7 +125,7 @@ void SetLamp(void) {
     }
     bell = true;
   }
-  #endif  
+#endif
 }
 
 void SetData(void) {
